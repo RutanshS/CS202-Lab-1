@@ -90,10 +90,35 @@ sys_uptime(void)
   return xticks;
 }
 
-uint64 sys_hello(void) // hello syscall definition
+uint64
+sys_hello(void) // hello syscall definition
 {
   int n;
   argint(0, &n);
   print_hello(n);
   return 0;
+}
+
+// return either total running processes right now
+// or total syscalls made since start
+// or no. of free memory pages right now
+uint64
+sys_sysinfo(void) 
+{
+  int param;
+  argint(0, &param);
+
+  int result;
+  switch(param)
+  {
+    case 0:
+      return count_active_processes();
+    case 1:
+      return get_syscall_count();
+    case 2:
+      return count_free_pages();
+    default:
+      return -1;
+  }
+  return result;
 }

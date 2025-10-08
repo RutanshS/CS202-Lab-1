@@ -684,7 +684,24 @@ procdump(void)
 
 
 // hello: printing hello msg
-void print_hello(int n)
+void 
+print_hello(int n)
 {
   printf("Hello from the kernel space %d\n", n);
+}
+
+// sysinfo: return total active (ready, running, waiting and zombie) processes.
+int 
+count_active_processes(void)
+{
+  struct proc *p;
+  int count = 0;
+  for (p = proc; p < &proc[NPROC]; p++) 
+  {
+    if (p -> state != UNUSED) 
+    {
+      count++;
+    }
+  }
+  return count;
 }

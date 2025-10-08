@@ -115,6 +115,8 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 # http://www.gnu.org/software/make/manual/html_node/Chained-Rules.html
 .PRECIOUS: %.o
 
+# test is hello syscall test
+# sysinfo_test is sysinfo syscall test
 UPROGS=\
 	$U/_cat\
 	$U/_echo\
@@ -133,6 +135,7 @@ UPROGS=\
 	$U/_wc\
 	$U/_zombie\
 	$U/_test\
+	$U/_sysinfo_test\
 
 fs.img: mkfs/mkfs README $(UPROGS)
 	mkfs/mkfs fs.img README $(UPROGS)
