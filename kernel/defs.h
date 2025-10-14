@@ -144,6 +144,7 @@ int             fetchstr(uint64, char*, int);
 int             fetchaddr(uint64, uint64*);
 void            syscall();
 int             get_syscall_count(void); // sysinfo
+uint64          sys_procinfo(void); // procinfo
 
 // trap.c
 extern uint     ticks;

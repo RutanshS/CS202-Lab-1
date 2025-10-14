@@ -122,3 +122,38 @@ sys_sysinfo(void)
   }
   return result;
 }
+
+struct pinfo {
+  int ppid;
+  int syscall_count;
+  int page_usage;
+};
+
+uint64
+sys_procinfo(void)
+{
+  uint64 user_addr;
+  struct pinfo kernel_pinfo;
+  struct proc *p = myproc();
+
+  argaddr(0, &user_addr);
+
+  // adding parent pid
+  if(p->parent == 0){
+    kernel_pinfo.ppid = -1;
+  }else{
+    kernel_pinfo.ppid = p->parent->pid;
+  }
+
+  //maintaining syscall_count excluding current procinfo call
+  kernel_pinfo.syscall_count = p->syscall_counter - 1;
+
+  //storing the page memory usage
+  kernel_pinfo.page_usage = (p->sz + PGSIZE - 1) / PGSIZE;
+
+  if(copyout(p->pagetable, user_addr, (char *)&kernel_pinfo, sizeof(kernel_pinfo)) < 0){
+    return -1;
+  }
+
+  return 0; 
+}
