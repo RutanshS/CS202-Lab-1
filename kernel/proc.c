@@ -124,6 +124,7 @@ allocproc(void)
 found:
   p->pid = allocpid();
   p->state = USED;
+  p->syscall_counter = 0; 
 
   // Allocate a trapframe page.
   if((p->trapframe = (struct trapframe *)kalloc()) == 0){
@@ -295,7 +296,8 @@ fork(void)
     return -1;
   }
   np->sz = p->sz;
-
+  np->syscall_counter = p->syscall_counter; 
+  np->parent = p;
   // copy saved user registers.
   *(np->trapframe) = *(p->trapframe);
 
